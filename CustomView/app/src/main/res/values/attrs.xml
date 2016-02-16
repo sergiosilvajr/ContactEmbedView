@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name = "com.viewutils.sergiosilvajr.customview.view.ContactEmbedView">
+        <attr name="user_name" format="string" />
+        <attr name="is_x_working" format="boolean" />
+    </declare-styleable>
+</resources>
