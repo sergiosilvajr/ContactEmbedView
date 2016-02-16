@@ -13,7 +13,7 @@ import com.viewutils.sergiosilvajr.customview.R;
  */
 public class ContactEmbedView extends FrameLayout{
     private String mContactName;
-    private boolean isXWorking;
+    private boolean isXWorking = true;
 
     public ContactEmbedView(Context context) {
         super(context);
@@ -56,8 +56,6 @@ public class ContactEmbedView extends FrameLayout{
             String packageName = "http://schemas.android.com/apk/res-auto";
             mContactName = attrs.getAttributeValue(packageName, "user_name");
             isXWorking = attrs.getAttributeBooleanValue(packageName,"is_x_working",true);
-        } else {
-            isXWorking = true;
         }
 
     }

@@ -13,7 +13,7 @@
     <com.viewutils.sergiosilvajr.customview.view.ContactEmbedView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        auto:user_name="Luis Sergio"
+        auto:user_name="Sergio Silva Jr"
         auto:is_x_working="false"
         />
 </RelativeLayout>

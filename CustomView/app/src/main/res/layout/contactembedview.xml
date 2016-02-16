@@ -19,13 +19,13 @@
             android:layout_centerVertical="true"
             android:textSize="40sp"
             android:background="@drawable/circle_view"
-            android:text="B"/>
+            android:text="U"/>
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Brena Souza"
+            android:text="Unnamed"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
             android:gravity="center"
