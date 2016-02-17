@@ -13,6 +13,7 @@ public class Contact {
     private List<String> emails;
     private byte[] photo;
 
+    public static ContactMainAttribute mainAttribute = ContactMainAttribute.NAME;
     public String getName() {
         return name;
     }
@@ -31,6 +32,14 @@ public class Contact {
         emails.add(email);
     }
 
+    public List<String> getEmails(){
+        return emails;
+    }
+
+    public List<String> getPhones(){
+        return phones;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -46,4 +55,26 @@ public class Contact {
     public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
+
+    public List<String> getEmailFromSuggestion(CharSequence charSequence){
+        List<String> emails = new ArrayList<>();
+        for(String email: emails){
+            if(email.toLowerCase().contains(charSequence)){
+                emails.add(email);
+            }
+        }
+        return emails;
+    }
+
+    public List<String> getPhonesFromSuggestion(CharSequence charSequence){
+        List<String> phones = new ArrayList<>();
+        for(String phone: phones){
+            if(phone.toLowerCase().startsWith(charSequence.toString().toLowerCase())){
+                phones.add(phone);
+            }
+        }
+        return phones;
+    }
+
+
 }

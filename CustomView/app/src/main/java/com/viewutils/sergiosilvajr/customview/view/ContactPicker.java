@@ -4,13 +4,16 @@ import android.content.Context;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.MultiAutoCompleteTextView;
+import android.widget.RelativeLayout;
 
 import com.viewutils.sergiosilvajr.customview.R;
 import com.viewutils.sergiosilvajr.customview.adapters.ContactAdapter;
 import com.viewutils.sergiosilvajr.customview.model.Contact;
+import com.viewutils.sergiosilvajr.customview.model.ContactMainAttribute;
 import com.viewutils.sergiosilvajr.customview.utils.ContactUtils;
 
 import java.util.ArrayList;
@@ -37,24 +40,34 @@ public class ContactPicker extends FrameLayout {
     }
 
     private void initView(){
-        View view = inflate(getContext(), R.layout.contactembedview, null);
-        AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) view.findViewById(R.id.multiautocompletetextview);
+        View rootView = inflate(getContext(), R.layout.contactembedview, null);
+        final RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.root_relative_contact_layout);
+
+        AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
         List<Contact> contacts = ContactUtils.getAllContacts(getContext());
+        Contact.mainAttribute = ContactMainAttribute.NAME;
 
-        multiAutoCompleteTextView.setAdapter( new ArrayAdapter(getContext(),android.R.layout.simple_dropdown_item_1line, convertListFromContactToString(contacts)));
+        final ContactAdapter contactAdapter = new ContactAdapter(getContext(),R.layout.adapter_row, contacts);
+
+        multiAutoCompleteTextView.setAdapter(contactAdapter);
+
         multiAutoCompleteTextView.setThreshold(1);
-
         multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        multiAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Contact contact = (Contact) contactAdapter.getItem(position);
+                ContactEmbedView contactEmbedView = new ContactEmbedView(getContext(), contact.getName());
+                contactEmbedView.setLayoutParams(new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT));
+                relativeLayout.addView(contactEmbedView);
+            }
+        });
 
-        view.invalidate();
-        addView(view);
-    }
-    private List<String> convertListFromContactToString( List<Contact> contacts){
-        List<String> names = new ArrayList<>();
-        for(Contact contact: contacts){
-            names.add(contact.getName());
-        }
-        return names;
+
+        rootView.invalidate();
+        addView(rootView);
     }
 
 }

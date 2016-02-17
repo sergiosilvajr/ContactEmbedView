@@ -20,6 +20,12 @@ public class ContactEmbedView extends FrameLayout{
         initView();
     }
 
+    public ContactEmbedView(Context context, String contactName) {
+        super(context);
+        mContactName = contactName;
+        initView();
+    }
+
     public ContactEmbedView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(attrs);
@@ -32,7 +38,7 @@ public class ContactEmbedView extends FrameLayout{
         initView();
     }
     private void initView(){
-        View view = inflate(getContext(), R.layout.contactembedview, null);
+        View view = inflate(getContext(), R.layout.customcontactview, null);
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView firstLetterTextView = (TextView) view.findViewById(R.id.circle_letter);
         if (mContactName!= null){
