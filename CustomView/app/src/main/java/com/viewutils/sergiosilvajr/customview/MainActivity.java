@@ -3,9 +3,8 @@ package com.viewutils.sergiosilvajr.customview;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.viewutils.sergiosilvajr.customview.utils.ContactUtils;
+import com.viewutils.sergiosilvajr.views.view.ContactPicker;
 
-import java.util.concurrent.Future;
 
 public class MainActivity extends AppCompatActivity {
 
