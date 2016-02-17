@@ -54,16 +54,18 @@ public class ContactUtils {
                             contact.addPhone(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)));
                         }
                         phoneCursor.close();
-
-                        Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
-                        while (emailCursor.moveToNext()) {
-                            contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
-                        }
-                        emailCursor.close();
-
-
                     }
-                    contactList.add(contact);
+                    Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
+                    while (emailCursor.moveToNext()) {
+                        contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
+                    }
+                    emailCursor.close();
+                    if( contact.getEmails() == null){
+                        continue;
+                    }else{
+                        contactList.add(contact);
+                    }
+
                 }
             }
         }

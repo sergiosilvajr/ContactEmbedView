@@ -77,12 +77,12 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
             if (contactsSubSet.get(position).getEmails() != null && !contactsSubSet.get(position).getEmails().isEmpty()){
                 holder.firstEmailTextView.setText(contactsSubSet.get(position).getEmails().get(0));
             } else{
-                holder.firstEmailTextView.setText("no emails");
+                holder.firstEmailTextView.setText("");
             }
             if (contactsSubSet.get(position).getPhones() != null && !contactsSubSet.get(position).getPhones().isEmpty()){
                 holder.phoneTextView.setText(contactsSubSet.get(position).getPhones().get(0));
             }else{
-                holder.firstEmailTextView.setText("no phones");
+                holder.phoneTextView.setText("");
             }
 
         return convertView;
@@ -123,11 +123,10 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
                             }
                         }
                     }
-                    FilterResults results = new FilterResults(); // Create new Filter Results and return this to publishResults;
+                    FilterResults results = new FilterResults();
                     results.values = suggestions;
                     results.count = suggestions.size();
                     return results;
-
                 } else {
                     return new FilterResults();
                 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     >
     <TextView
@@ -11,7 +11,7 @@
         android:gravity="center"
         android:layout_width="50dp"
         android:background="@drawable/circle_view"
-        android:text="S"/>
+        android:text="U"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -21,16 +21,16 @@
             android:id="@+id/text_view_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sergio"/>
+            android:text="unnamed"/>
         <TextView
             android:id="@+id/text_view_item_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="123456789"/>
+            android:text="no phone"/>
         <TextView
             android:id="@+id/text_view_item_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="sergio@sergio.com.br"/>
+            android:text="no email"/>
     </LinearLayout>
 </LinearLayout>
