@@ -1,36 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/square_view"
     >
     <TextView
         android:id="@+id/first_letter_text_view"
-        android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:gravity="center"
         android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:textSize="40sp"
         android:background="@drawable/circle_view"
         android:text="U"/>
-
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:layout_toRightOf="@id/first_letter_text_view"
+        android:id="@+id/text_view_item_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:textSize="30sp"
+        android:layout_marginRight="5dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:maxLength="10"
+        android:text="unnamed"/>
         <TextView
-            android:id="@+id/text_view_item_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="unnamed"/>
-        <TextView
+            android:layout_toRightOf="@id/text_view_item_name"
             android:id="@+id/text_view_item_phone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="no phone"/>
         <TextView
+            android:layout_toRightOf="@id/text_view_item_name"
+            android:layout_below="@id/text_view_item_phone"
             android:id="@+id/text_view_item_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="no email"/>
-    </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
