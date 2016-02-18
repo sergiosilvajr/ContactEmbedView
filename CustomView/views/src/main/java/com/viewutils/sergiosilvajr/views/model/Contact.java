@@ -79,4 +79,7 @@ public class Contact {
     }
 
 
+    public byte[] getPhoto() {
+        return photo;
+    }
 }

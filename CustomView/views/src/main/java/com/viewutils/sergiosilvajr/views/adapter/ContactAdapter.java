@@ -2,6 +2,12 @@ package com.viewutils.sergiosilvajr.views.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,11 +61,12 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 
+        Contact currentContact = contactsSubSet.get(position);
+
         ViewHolder holder;
         if (convertView == null) {
             convertView =  inflater.inflate(mLayoutResourceId, parent, false);
             holder = new ViewHolder();
-
 
             holder.nameTextView = (TextView) convertView.findViewById(R.id.text_view_item_name);
             holder.letterTextView = (TextView) convertView.findViewById(R.id.first_letter_text_view);
@@ -70,15 +77,25 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-            holder.nameTextView.setText(contactsSubSet.get(position).getName());
-            holder.letterTextView.setText(Character.toString(contactsSubSet.get(position).getName().charAt(0)));
-            if (contactsSubSet.get(position).getEmails() != null && !contactsSubSet.get(position).getEmails().isEmpty()){
-                holder.firstEmailTextView.setText(contactsSubSet.get(position).getEmails().get(0));
+            holder.nameTextView.setText(currentContact.getName());
+
+            if (currentContact.getPhoto() != null){
+                holder.letterTextView.setText("");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(currentContact.getPhoto(), 0, currentContact.getPhoto().length);
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(context.getResources(), bitmap);
+                dr.setCircular(true);
+                holder.letterTextView.setBackground(dr);
+            }else{
+                holder.letterTextView.setText(Character.toString(currentContact.getName().charAt(0)));
+            }
+
+            if (contactsSubSet.get(position).getEmails() != null && !currentContact.getEmails().isEmpty()){
+                holder.firstEmailTextView.setText(currentContact.getEmails().get(0));
             } else{
                 holder.firstEmailTextView.setText("");
             }
-            if (contactsSubSet.get(position).getPhones() != null && !contactsSubSet.get(position).getPhones().isEmpty()){
-                holder.phoneTextView.setText(contactsSubSet.get(position).getPhones().get(0));
+            if (contactsSubSet.get(position).getPhones() != null && !currentContact.getPhones().isEmpty()){
+                holder.phoneTextView.setText(currentContact.getPhones().get(0));
             }else{
                 holder.phoneTextView.setText("");
             }

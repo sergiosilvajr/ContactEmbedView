@@ -1,28 +1,33 @@
 package com.viewutils.sergiosilvajr.views.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.viewutils.sergiosilvajr.views.R;
+import com.viewutils.sergiosilvajr.views.model.Contact;
 
 /**
  * Created by luissergiodasilvajunior on 16/02/16.
  */
 public class ContactEmbedView extends FrameLayout{
-    private String mContactName;
     private boolean isXWorking = true;
+    private Contact contact;
 
     public ContactEmbedView(Context context) {
         super(context);
         initView();
     }
 
-    public ContactEmbedView(Context context, String contactName) {
+    public ContactEmbedView(Context context, Contact contact) {
         super(context);
-        mContactName = contactName;
+        this.contact = contact;
         initView();
     }
 
@@ -41,9 +46,18 @@ public class ContactEmbedView extends FrameLayout{
         View view = inflate(getContext(), R.layout.customcontactview, null);
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView firstLetterTextView = (TextView) view.findViewById(R.id.circle_letter);
-        if (mContactName!= null){
-            nameTextView.setText(mContactName);
-            firstLetterTextView.setText(Character.toString(mContactName.charAt(0)));
+        if (contact != null){
+            nameTextView.setText(contact.getName());
+            if (contact.getPhoto() == null) {
+                firstLetterTextView.setText(Character.toString(contact.getName().charAt(0)));
+            } else {
+                firstLetterTextView.setText("");
+                Bitmap bitmap = BitmapFactory.decodeByteArray(contact.getPhoto(), 0, contact.getPhoto().length);
+                RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getContext().getResources(), bitmap);
+                dr.setCircular(true);
+                firstLetterTextView.setBackground(dr);
+            }
+
         }
         TextView cross = (TextView) view.findViewById(R.id.cross);
         if(isXWorking){
@@ -59,8 +73,9 @@ public class ContactEmbedView extends FrameLayout{
     }
     private void initAttrs(AttributeSet attrs){
         if (attrs != null){
+            contact = new Contact();
             String packageName = "http://schemas.android.com/apk/res-auto";
-            mContactName = attrs.getAttributeValue(packageName, "user_name");
+            contact.setName(attrs.getAttributeValue(packageName, "user_name"));
             isXWorking = attrs.getAttributeBooleanValue(packageName,"is_x_working",true);
         }
 
