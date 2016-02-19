@@ -11,7 +11,6 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
 import com.viewutils.sergiosilvajr.views.R;
 import com.viewutils.sergiosilvajr.views.adapter.ContactAdapter;
 import com.viewutils.sergiosilvajr.views.model.Contact;
@@ -21,22 +20,23 @@ import com.viewutils.sergiosilvajr.views.utils.ContactUtils;
 import java.util.List;
 
 /**
- * Created by sergiosilvajr on 2/16/16.
+ * Created by sergiosilvajr on 2/16/16. ContactPicker
  */
-public final class  ContactPicker extends FrameLayout {
+//TODO - implement this class to use to more than one contact
+public final class MultContactsPicker extends FrameLayout {
     private AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView;
-    private ContactEmbedView contactEmbedView;
-    public ContactPicker(Context context) {
+
+    public MultContactsPicker(Context context) {
         super(context);
         initView();
     }
 
-    public ContactPicker(Context context, AttributeSet attrs) {
+    public MultContactsPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView();
     }
 
-    public ContactPicker(Context context, AttributeSet attrs, int defStyleAttr) {
+    public MultContactsPicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
@@ -58,10 +58,8 @@ public final class  ContactPicker extends FrameLayout {
         multiAutoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                    contactEmbedView.setVisibility(View.GONE);
-                    multiAutoCompleteTextView.requestFocus();
-                    multiAutoCompleteTextView.setText("");
+                if (event.getKeyCode() ==KeyEvent.KEYCODE_BACK ){
+
                 }
                 return false;
             }
@@ -71,10 +69,7 @@ public final class  ContactPicker extends FrameLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Contact contact = (Contact) contactAdapter.getItem(position);
-                if (contactEmbedView != null) {
-                    contactEmbedView.setVisibility(View.GONE);
-                }
-                contactEmbedView = new ContactEmbedView(getContext(), contact);
+                ContactEmbedView contactEmbedView = new ContactEmbedView(getContext(), contact);
                 contactEmbedView.setMultiAutoCompleteTextView(multiAutoCompleteTextView);
                 contactEmbedView.setLayoutParams(new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,

@@ -23,9 +23,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by luissergiodasilvajunior on 16/02/16.
+ * Created by luissergiodasilvajunior on 16/02/16. //only works to select one contact on the textview
  */
-public class ContactEmbedView extends FrameLayout{
+final class ContactEmbedView extends FrameLayout{
     private boolean isXWorking = true;
     private Contact contact;
     private MultiAutoCompleteTextView multiAutoCompleteTextView;
@@ -82,7 +82,7 @@ public class ContactEmbedView extends FrameLayout{
                 @Override
                 public void onClick(View v) {
                     if (multiAutoCompleteTextView != null) {
-                        multiAutoCompleteTextView.setVisibility(View.VISIBLE);
+                        multiAutoCompleteTextView.requestFocus();
                         multiAutoCompleteTextView.setText("");
                     }
                     setVisibility(View.GONE);
