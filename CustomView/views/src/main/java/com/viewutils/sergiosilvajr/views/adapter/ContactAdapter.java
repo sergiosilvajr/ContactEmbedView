@@ -97,7 +97,7 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
                 if(currentContact.getViewColor() == null ){
                     currentContact.setViewColor(ColorUtils.getRandomColor());
                 }
-                int color = ColorUtils.getRandomColor();
+                int color = currentContact.getViewColor();
                 if (holder.letterTextView.getBackground() instanceof RoundedBitmapDrawable){
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1){
                         holder.letterTextView.setBackground(context.getResources().getDrawable(R.drawable.circle_view,null));
