@@ -72,6 +72,8 @@ public final class  ContactPicker extends FrameLayout {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT));
                 relativeLayout.addView(contactEmbedView);
+                //((RelativeLayout.LayoutParams)contactEmbedView.getLayoutParams()).addRule(RelativeLayout.CENTER_HORIZONTAL  ,RelativeLayout.TRUE);
+
                 multiAutoCompleteTextView.postDelayed(new Runnable() {
                     public void run() {
                         InputMethodManager keyboard = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
