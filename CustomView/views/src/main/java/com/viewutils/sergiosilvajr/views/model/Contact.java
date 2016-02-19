@@ -15,6 +15,8 @@ public class Contact {
     private List<String> emails;
     private byte[] photo;
 
+    private Integer viewColor;
+
     public static ContactMainAttribute mainAttribute = ContactMainAttribute.NAME;
     public String getName() {
         return name;
@@ -81,5 +83,13 @@ public class Contact {
 
     public byte[] getPhoto() {
         return photo;
+    }
+
+    public Integer getViewColor() {
+        return viewColor;
+    }
+
+    public void setViewColor(Integer viewColor) {
+        this.viewColor = viewColor;
     }
 }

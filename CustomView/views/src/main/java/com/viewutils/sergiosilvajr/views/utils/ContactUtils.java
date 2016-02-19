@@ -36,35 +36,28 @@ public class ContactUtils {
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
         if (cursor !=null) {
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                while (cursor.moveToNext()){
-                    Contact contact = new Contact();
-                    contact.setName(cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)));
-                    contact.setId(cursor.getString(cursor.getColumnIndex(_ID)));
-                    contact.setPhoto(openPhoto(context, Long.parseLong(contact.getId())));
+            while (cursor.moveToNext()){
+                Contact contact = new Contact();
+                contact.setName(cursor.getString(cursor.getColumnIndex(DISPLAY_NAME)));
+                contact.setId(cursor.getString(cursor.getColumnIndex(_ID)));
+                contact.setPhoto(openPhoto(context, Long.parseLong(contact.getId())));
 
-                    int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
 
-                    if (hasPhoneNumber > 0) {
-                        Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact.getId()}, null);
-                        phoneCursor.moveToFirst();
-                        while (phoneCursor.moveToNext()) {
-                            contact.addPhone(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)));
-                        }
-                        phoneCursor.close();
+                if (hasPhoneNumber > 0) {
+                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact.getId()}, null);
+                    while (phoneCursor.moveToNext()) {
+                        contact.addPhone(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)));
                     }
-                    Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
-                    while (emailCursor.moveToNext()) {
-                        contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
-                    }
-                    emailCursor.close();
-                    if( contact.getEmails() == null){
-                        continue;
-                    }else{
-                        contactList.add(contact);
-                    }
-
+                    phoneCursor.close();
+                }
+                Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
+                while (emailCursor.moveToNext()) {
+                    contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
+                }
+                emailCursor.close();
+                if(contact.getEmails() != null && !contact.getEmails().isEmpty()) {
+                    contactList.add(contact);
                 }
             }
         }

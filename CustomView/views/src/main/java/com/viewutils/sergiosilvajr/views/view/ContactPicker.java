@@ -71,7 +71,4 @@ public class ContactPicker extends FrameLayout {
         rootView.invalidate();
         addView(rootView);
     }
-    public AppCompatMultiAutoCompleteTextView getMultiAutoCompleteTextView(){
-        return this.multiAutoCompleteTextView;
-    }
 }

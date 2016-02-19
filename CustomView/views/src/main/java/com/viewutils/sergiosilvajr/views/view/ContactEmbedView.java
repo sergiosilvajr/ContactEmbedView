@@ -3,6 +3,8 @@ package com.viewutils.sergiosilvajr.views.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
@@ -14,6 +16,11 @@ import android.widget.TextView;
 
 import com.viewutils.sergiosilvajr.views.R;
 import com.viewutils.sergiosilvajr.views.model.Contact;
+import com.viewutils.sergiosilvajr.views.utils.ColorUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created by luissergiodasilvajunior on 16/02/16.
@@ -49,6 +56,10 @@ public class ContactEmbedView extends FrameLayout{
         View view = inflate(getContext(), R.layout.customcontactview, null);
         TextView nameTextView = (TextView) view.findViewById(R.id.name);
         TextView firstLetterTextView = (TextView) view.findViewById(R.id.circle_letter);
+
+        GradientDrawable gradientDrawable  = ((GradientDrawable) firstLetterTextView.getBackground());
+        gradientDrawable.setColor(contact.getViewColor());
+        firstLetterTextView.setBackground(gradientDrawable);
         if (contact != null){
             nameTextView.setText(contact.getName());
             if (contact.getPhoto() == null) {
@@ -88,6 +99,8 @@ public class ContactEmbedView extends FrameLayout{
         }
 
     }
+
+
 
     public void setMultiAutoCompleteTextView(MultiAutoCompleteTextView multiAutoCompleteTextView) {
         this.multiAutoCompleteTextView = multiAutoCompleteTextView;

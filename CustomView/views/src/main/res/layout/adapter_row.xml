@@ -13,6 +13,7 @@
         android:layout_centerVertical="true"
         android:textSize="40sp"
         android:background="@drawable/circle_view"
+        android:textAllCaps="true"
         android:text="U"/>
     <TextView
         android:layout_toRightOf="@id/first_letter_text_view"
