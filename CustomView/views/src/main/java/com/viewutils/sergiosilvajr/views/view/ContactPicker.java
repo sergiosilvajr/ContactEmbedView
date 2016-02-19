@@ -22,6 +22,7 @@ import java.util.List;
  * Created by sergiosilvajr on 2/16/16.
  */
 public class ContactPicker extends FrameLayout {
+    private AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView;
 
     public ContactPicker(Context context) {
         super(context);
@@ -42,7 +43,7 @@ public class ContactPicker extends FrameLayout {
         View rootView = inflate(getContext(), R.layout.contactembedview, null);
         final RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.root_relative_contact_layout);
 
-        final AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
+        this.multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
         List<Contact> contacts = ContactUtils.getAllContacts(getContext());
         Contact.mainAttribute = ContactMainAttribute.NAME;
 
@@ -57,7 +58,7 @@ public class ContactPicker extends FrameLayout {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Contact contact = (Contact) contactAdapter.getItem(position);
                 ContactEmbedView contactEmbedView = new ContactEmbedView(getContext(), contact);
-
+                contactEmbedView.setMultiAutoCompleteTextView(multiAutoCompleteTextView);
                 contactEmbedView.setLayoutParams(new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT));
@@ -70,5 +71,7 @@ public class ContactPicker extends FrameLayout {
         rootView.invalidate();
         addView(rootView);
     }
-
+    public AppCompatMultiAutoCompleteTextView getMultiAutoCompleteTextView(){
+        return this.multiAutoCompleteTextView;
+    }
 }

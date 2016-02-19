@@ -5,9 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 
 import com.viewutils.sergiosilvajr.views.R;
@@ -19,6 +21,7 @@ import com.viewutils.sergiosilvajr.views.model.Contact;
 public class ContactEmbedView extends FrameLayout{
     private boolean isXWorking = true;
     private Contact contact;
+    private MultiAutoCompleteTextView multiAutoCompleteTextView;
 
     public ContactEmbedView(Context context) {
         super(context);
@@ -64,7 +67,12 @@ public class ContactEmbedView extends FrameLayout{
             cross.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (multiAutoCompleteTextView != null) {
+                        multiAutoCompleteTextView.setVisibility(View.VISIBLE);
+                        multiAutoCompleteTextView.setText("");
+                    }
                     setVisibility(View.GONE);
+                    //TODO ver como deletar da memoria a view
                 }
             });
         }
@@ -79,5 +87,9 @@ public class ContactEmbedView extends FrameLayout{
             isXWorking = attrs.getAttributeBooleanValue(packageName,"is_x_working",true);
         }
 
+    }
+
+    public void setMultiAutoCompleteTextView(MultiAutoCompleteTextView multiAutoCompleteTextView) {
+        this.multiAutoCompleteTextView = multiAutoCompleteTextView;
     }
 }
