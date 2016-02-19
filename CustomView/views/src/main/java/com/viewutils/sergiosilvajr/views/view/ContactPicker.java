@@ -1,10 +1,13 @@
 package com.viewutils.sergiosilvajr.views.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.MultiAutoCompleteTextView;
@@ -55,17 +58,6 @@ public final class  ContactPicker extends FrameLayout {
 
         multiAutoCompleteTextView.setThreshold(1);
 
-        multiAutoCompleteTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-                    contactEmbedView.setVisibility(View.GONE);
-                    multiAutoCompleteTextView.requestFocus();
-                    multiAutoCompleteTextView.setText("");
-                }
-                return false;
-            }
-        });
         multiAutoCompleteTextView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         multiAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,8 +72,14 @@ public final class  ContactPicker extends FrameLayout {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT));
                 relativeLayout.addView(contactEmbedView);
+                multiAutoCompleteTextView.postDelayed(new Runnable() {
+                    public void run() {
+                        InputMethodManager keyboard = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        keyboard.hideSoftInputFromWindow(
+                                multiAutoCompleteTextView.getWindowToken(), 0);
+                    }
+                }, 200);
                 multiAutoCompleteTextView.clearFocus();
-                //multiAutoCompleteTextView.setVisibility(View.INVISIBLE);
             }
         });
 
