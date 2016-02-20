@@ -58,12 +58,11 @@ final class ContactEmbedView extends FrameLayout{
         TextView firstLetterTextView = (TextView) view.findViewById(R.id.circle_letter);
 
         if (contact != null){
-            if (contact.getViewColor() != null){
+            if(contact.getViewColor() != null){
                 GradientDrawable gradientDrawable  = ((GradientDrawable) firstLetterTextView.getBackground());
                 gradientDrawable.setColor(contact.getViewColor());
                 firstLetterTextView.setBackground(gradientDrawable);
             }
-
             nameTextView.setText(contact.getName());
             if (contact.getPhoto() == null) {
                 firstLetterTextView.setText(Character.toString(contact.getName().charAt(0)));

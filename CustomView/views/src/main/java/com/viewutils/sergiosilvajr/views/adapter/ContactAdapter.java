@@ -154,7 +154,7 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
                             if (contact.getName().toLowerCase().startsWith(constraint.toString().toLowerCase()) ){
                                 suggestions.add(contact);
                             }
-                        }else if (Contact.mainAttribute ==ContactMainAttribute.EMAIL){
+                        }else if (Contact.mainAttribute == ContactMainAttribute.EMAIL){
                             if (!contact.getEmailFromSuggestion(constraint).isEmpty()){
                                 suggestions.add(contact);
                             }
