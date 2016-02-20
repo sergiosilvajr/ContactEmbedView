@@ -4,4 +4,11 @@
         <attr name="user_name" format="string" />
         <attr name="is_x_working" format="boolean" />
     </declare-styleable>
+    <declare-styleable name = "com.viewutils.sergiosilvajr.customview.view.ContactPicker">
+        <attr name="main_type" format="enum" >
+            <enum name="name" value="1"/>
+            <enum name="email" value="2"/>
+            <enum name="phone" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>

@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Views</string>
+    <string name="no_email">No email available</string>
+    <string name="no_phone">No phone available</string>
+    <string name="no_name">unnamed</string>
 </resources>

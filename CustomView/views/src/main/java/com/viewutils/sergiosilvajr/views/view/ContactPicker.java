@@ -31,16 +31,19 @@ public final class  ContactPicker extends FrameLayout {
     private ContactEmbedView contactEmbedView;
     public ContactPicker(Context context) {
         super(context);
+        initAttrs(null);
         initView();
     }
 
     public ContactPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
+        initAttrs(attrs);
         initView();
     }
 
     public ContactPicker(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initAttrs(attrs);
         initView();
     }
 
@@ -49,7 +52,7 @@ public final class  ContactPicker extends FrameLayout {
         final RelativeLayout relativeLayout = (RelativeLayout) rootView.findViewById(R.id.root_relative_contact_layout);
 
         this.multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
-        List<Contact> contacts = ContactUtils.getAllContacts(getContext());
+        List<Contact> contacts = ContactUtils.getInstance().getContactList();
         Contact.mainAttribute = ContactMainAttribute.NAME;
 
         final ContactAdapter contactAdapter = new ContactAdapter(getContext(), R.layout.adapter_row, contacts);
@@ -88,5 +91,25 @@ public final class  ContactPicker extends FrameLayout {
 
         rootView.invalidate();
         addView(rootView);
+    }
+
+    private void initAttrs(AttributeSet attrs){
+        if (attrs != null) {
+            String packageName = "http://schemas.android.com/apk/res-auto";
+            String value = (attrs.getAttributeValue(packageName, "main_type"));
+            if(value!=null) {
+                if (value.equals("1")) {
+                    Contact.mainAttribute = ContactMainAttribute.NAME;
+                } else if (value.equals("2")) {
+                    Contact.mainAttribute = ContactMainAttribute.EMAIL;
+                } else if (value.equals("3")) {
+                    Contact.mainAttribute = ContactMainAttribute.NUMBER;
+                } else {
+                    Contact.mainAttribute = ContactMainAttribute.NAME;
+                }
+            }else{
+                Contact.mainAttribute = ContactMainAttribute.NAME;
+            }
+        }
     }
 }

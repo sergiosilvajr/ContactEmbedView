@@ -64,7 +64,6 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Log.v("position", "" + position);
         Contact currentContact = contactsSubSet.get(position);
         ViewHolder holder;
 

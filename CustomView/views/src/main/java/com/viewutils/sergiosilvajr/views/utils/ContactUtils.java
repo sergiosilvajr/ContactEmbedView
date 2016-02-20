@@ -10,15 +10,35 @@ import android.provider.ContactsContract;
 import com.viewutils.sergiosilvajr.views.model.Contact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by sergiosilvajr on 2/16/16.
  */
 public class ContactUtils {
-    public static List<Contact> getAllContacts(Context context){
-        List<Contact> contactList = new ArrayList<>();
+    private static ContactUtils contactUtils;
+    private List<Contact> contactList = new ArrayList<>();
 
+    private ContactUtils(){}
+
+    public static ContactUtils getInstance() {
+        if (contactUtils==null){
+            contactUtils = new ContactUtils();
+        }
+        return contactUtils;
+    }
+
+    public void clearList(){
+        if (contactList != null){
+            contactList.clear();
+        }
+    }
+
+    public List<Contact> getContactList(){
+        return contactList;
+    }
+    public void loadAllContacts(Context context){
         Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
         String _ID = ContactsContract.Contacts._ID;
 
@@ -61,10 +81,9 @@ public class ContactUtils {
                 }
             }
         }
-        return contactList;
     }
 
-    private static byte[] openPhoto(Context context, long contactId) {
+    private byte[] openPhoto(Context context, long contactId) {
         Uri contactUri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactId);
         Uri photoUri = Uri.withAppendedPath(contactUri, ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
         Cursor cursor = context.getContentResolver().query(photoUri,

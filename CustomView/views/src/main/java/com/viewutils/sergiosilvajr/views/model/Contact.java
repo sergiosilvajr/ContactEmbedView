@@ -63,7 +63,7 @@ public class Contact {
     public List<String> getEmailFromSuggestion(CharSequence charSequence){
         List<String> emails = new ArrayList<>();
         for(String email: emails){
-            if(email.toLowerCase().contains(charSequence)){
+            if(email.toLowerCase().startsWith(charSequence.toString().toLowerCase())){
                 emails.add(email);
             }
         }
