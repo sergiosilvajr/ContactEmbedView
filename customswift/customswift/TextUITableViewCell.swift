@@ -10,20 +10,20 @@ import UIKit
 
 class TextUITableViewCell: UITableViewCell {
 
-    var label: UILabel
+    var label: UILabel!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.label = UILabel(frame: CGRectMake(5,10,300,50))
-        self.addSubview(self.label)
-
+        custom()
     }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.label = UILabel(frame: CGRectMake(5,10,300,50))
+        custom()
+    }
+    func custom(){
+        self.label = UILabel(frame: bounds)
         self.addSubview(self.label)
-
     }
     /*
     // Only override drawRect: if you perform custom drawing.
