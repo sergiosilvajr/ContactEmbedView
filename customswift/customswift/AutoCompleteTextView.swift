@@ -48,21 +48,22 @@ import UIKit
     }
 
     private func initSubview(){
-        queryItems.append("a")
-        queryItems.append("b")
-        queryItems.append("c")
-        queryItems.append("d")
-        self.clipsToBounds = false
+        queryItems.append("A")
+        queryItems.append("AAA")
+        queryItems.append("D")
+        queryItems.append("Dd")
+        self.clipsToBounds = true
         
-        self.textField = UITextField(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: frame.width, height: frame.height))
+        self.textField = UITextField(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: frame.width, height: 30))
         self.textField!.backgroundColor = UIColor.yellowColor()
         
-        self.textField!.placeholder = "orra diabo"
+        self.textField!.placeholder = "Enter your contact name here"
         self.textField!.delegate = self
         self.textField!.enabled = true
         self.textField!.hidden = false
         self.textField!.clipsToBounds = true
-       
+        self.textField!.becomeFirstResponder()
+        
         let tableY = bounds.origin.y + (textField?.frame.height)!
         let rect = CGRect(x: bounds.origin.x, y: tableY, width: bounds.width, height:  CGFloat( UIScreen.mainScreen().bounds.height))
         self.tableView = UITableView(frame: rect)
@@ -75,55 +76,75 @@ import UIKit
 
         self.addSubview(textField!)
         self.addSubview(tableView!)
-
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: TextUITableViewCell = tableView.cellForRowAtIndexPath(indexPath) as! TextUITableViewCell
+        let cell: TextUITableViewCell =  tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
         
         self.selectedString = cell.label.text
+        self.textField!.text = selectedString
+        self.tableView!.hidden = true
         
-        print(self.selectedString)
+        if let string = self.selectedString{
+            print(string)
+        }
+    
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.Gray
-
-        cell.label.text = queryItems[indexPath.row]
+        cell.label.text = subSetQueryItems[indexPath.row]
         return cell
     }
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        
+        print("textFieldDidBeginEditing")
     }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        print("textFieldShouldReturn")
+        return true
+
+    }
+    func textFieldShouldClear(textField: UITextField) -> Bool {
+        print("textFieldShouldReturn")
+        return true
+    }
+    
+    private func updateSubsetWords(word: String){
+        self.subSetQueryItems.removeAll()
+        for currentString in queryItems{
+            if currentString.hasPrefix(word) {//||  word.hasPrefix(currentString){
+                subSetQueryItems.append(currentString)
+            }
+        }
+        print(subSetQueryItems)
+
+        self.tableView?.reloadData()
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.textField!.endEditing(true)
         self.tableView!.hidden = true
-        queryItems.removeAll()
-        
-        queryItems.append("d")
-        queryItems.append("d")
-        queryItems.append("d")
-        queryItems.append("d")
-        self.tableView!.reloadData()
-    }
-    
-    func searchAutocompleteEntriesWithSubstring(text: String){
-        queryItems.removeAll()
-        self.tableView!.reloadData()
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         self.tableView!.hidden = false
+        
+        if (range.length==1 && string.characters.count==0){
+            print("backspace Pressed")
+            self.paramString = self.paramString.substringToIndex(self.paramString.endIndex.predecessor())
+        }else{
+            self.paramString = self.paramString! + string
 
-        self.paramString = self.paramString! + string
-        print(paramString)
+        }
+        self.updateSubsetWords(paramString)
        
         return true
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return subSetQueryItems.count
     }
 }
