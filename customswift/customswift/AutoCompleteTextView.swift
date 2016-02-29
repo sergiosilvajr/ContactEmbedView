@@ -5,7 +5,7 @@
 //  Created by Luis Sergio da Silva Junior on 2/23/16.
 //  Copyright © 2016 Luis Sergio. All rights reserved.
 //
-
+import Contacts
 import UIKit
 
 @IBDesignable class AutoCompleteTextView : UIView, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource{
@@ -25,7 +25,9 @@ import UIKit
     
     var paramString : String! = ""
     var selectedString : String?
+    var contactPermission : Bool = false
     
+    var contactStore : CNContactStore?
     @IBInspectable var borderColor: UIColor = UIColor.whiteColor(){
         didSet{
             layer.borderColor = borderColor.CGColor
@@ -39,19 +41,70 @@ import UIKit
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        self.contactStore = self.accessContacts()
         self.initSubview()
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.contactStore = self.accessContacts()
         self.initSubview()
+    }
+    
+    private func accessContacts() -> CNContactStore{
+        let contactStore = CNContactStore()
+        switch CNContactStore.authorizationStatusForEntityType(.Contacts){
+        case .Authorized:
+            print("Authorized")
+            contactPermission = true
+        case .NotDetermined:
+            print("Not Determined")
+            contactStore.requestAccessForEntityType(.Contacts){succeeded, err in
+                guard err == nil && succeeded else{
+                    return
+                }
+            }
+        default:
+            print("Not Authorized")
+            contactPermission = false
+        }
+        return contactStore
+    }
+    
+    private func getContactList(prefix: String,store: CNContactStore){
+        NSOperationQueue().addOperationWithBlock({
+            if self.contactPermission{
+                let predicate = CNContact.predicateForContactsMatchingName(prefix)
+                let toFetch = [CNContactGivenNameKey]
+                
+                do{
+                    let contacts = try store.unifiedContactsMatchingPredicate(
+                        predicate, keysToFetch: toFetch)
+                    var myContacts = [Contact]()
+                    
+                    for contact in contacts{
+                        let myContact = Contact()
+                        myContact.name = contact.givenName
+                        myContact.id = contact.identifier
+                        myContacts.append(myContact)
+                        self.subSetQueryItems.append(myContact.name!)
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tableView?.reloadData()
+                    })
+                    print("contact read")
+                    
+                } catch let err{
+                    print(err)
+                }
+
+            }
+           
+        })
     }
 
     private func initSubview(){
-        queryItems.append("A")
-        queryItems.append("AAA")
-        queryItems.append("D")
-        queryItems.append("Dd")
         self.clipsToBounds = true
         
         self.textField = UITextField(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: frame.width, height: 30))
@@ -112,17 +165,14 @@ import UIKit
         return true
     }
     
-    private func updateSubsetWords(word: String){
-        self.subSetQueryItems.removeAll()
-        for currentString in queryItems{
-            if currentString.hasPrefix(word) {//||  word.hasPrefix(currentString){
-                subSetQueryItems.append(currentString)
-            }
-        }
-        print(subSetQueryItems)
-
-        self.tableView?.reloadData()
-    }
+//    private func updateSubsetWords(word: String){
+//        self.subSetQueryItems.removeAll()
+//        for currentString in queryItems{
+//            if currentString.hasPrefix(word) {//||  word.hasPrefix(currentString){
+//                subSetQueryItems.append(currentString)
+//            }
+//        }
+//    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.textField!.endEditing(true)
@@ -139,7 +189,8 @@ import UIKit
             self.paramString = self.paramString! + string
 
         }
-        self.updateSubsetWords(paramString)
+        self.subSetQueryItems.removeAll()
+        getContactList(self.paramString, store: self.contactStore!)
        
         return true
     }

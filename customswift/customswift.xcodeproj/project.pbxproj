@@ -12,8 +12,8 @@
 		B158546A1C7CAAD1002A771D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15854681C7CAAD1002A771D /* Main.storyboard */; };
 		B158546C1C7CAAD1002A771D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B158546B1C7CAAD1002A771D /* Assets.xcassets */; };
 		B158546F1C7CAAD1002A771D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B158546D1C7CAAD1002A771D /* LaunchScreen.storyboard */; };
-		B15854771C7CAAF0002A771D /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15854761C7CAAF0002A771D /* CustomView.swift */; };
 		B15854791C7CABE1002A771D /* AutoCompleteTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15854781C7CABE1002A771D /* AutoCompleteTextView.swift */; };
+		B161DE071C8467F7005CBCAE /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = B161DE061C8467F7005CBCAE /* Contact.swift */; };
 		B1D135AA1C7CBBAF004C93D8 /* TextUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1D135A91C7CBBAF004C93D8 /* TextUITableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,8 +25,8 @@
 		B158546B1C7CAAD1002A771D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B158546E1C7CAAD1002A771D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B15854701C7CAAD1002A771D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B15854761C7CAAF0002A771D /* CustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		B15854781C7CABE1002A771D /* AutoCompleteTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoCompleteTextView.swift; sourceTree = "<group>"; };
+		B161DE061C8467F7005CBCAE /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		B1D135A91C7CBBAF004C93D8 /* TextUITableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextUITableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,17 +60,33 @@
 		B15854631C7CAAD1002A771D /* customswift */ = {
 			isa = PBXGroup;
 			children = (
+				B161DE091C8471CB005CBCAE /* model */,
+				B161DE081C8471AA005CBCAE /* view */,
 				B15854641C7CAAD1002A771D /* AppDelegate.swift */,
 				B15854661C7CAAD1002A771D /* ViewController.swift */,
 				B15854681C7CAAD1002A771D /* Main.storyboard */,
 				B158546B1C7CAAD1002A771D /* Assets.xcassets */,
 				B158546D1C7CAAD1002A771D /* LaunchScreen.storyboard */,
 				B15854701C7CAAD1002A771D /* Info.plist */,
-				B15854761C7CAAF0002A771D /* CustomView.swift */,
+			);
+			path = customswift;
+			sourceTree = "<group>";
+		};
+		B161DE081C8471AA005CBCAE /* view */ = {
+			isa = PBXGroup;
+			children = (
 				B15854781C7CABE1002A771D /* AutoCompleteTextView.swift */,
 				B1D135A91C7CBBAF004C93D8 /* TextUITableViewCell.swift */,
 			);
-			path = customswift;
+			name = view;
+			sourceTree = "<group>";
+		};
+		B161DE091C8471CB005CBCAE /* model */ = {
+			isa = PBXGroup;
+			children = (
+				B161DE061C8467F7005CBCAE /* Contact.swift */,
+			);
+			name = model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,8 +160,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B161DE071C8467F7005CBCAE /* Contact.swift in Sources */,
 				B1D135AA1C7CBBAF004C93D8 /* TextUITableViewCell.swift in Sources */,
-				B15854771C7CAAF0002A771D /* CustomView.swift in Sources */,
 				B15854671C7CAAD1002A771D /* ViewController.swift in Sources */,
 				B15854651C7CAAD1002A771D /* AppDelegate.swift in Sources */,
 				B15854791C7CABE1002A771D /* AutoCompleteTextView.swift in Sources */,
