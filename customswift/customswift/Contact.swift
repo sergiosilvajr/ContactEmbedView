@@ -6,10 +6,11 @@
 //  Copyright © 2016 Luis Sergio. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Contact{
     var id : String?
     var name : String?
     var familyName: String?
+    var thumbImage: NSData?
 }

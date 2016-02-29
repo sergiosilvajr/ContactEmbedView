@@ -21,11 +21,13 @@ import UIKit
     var tableView : UITableView?
     var queryItems: [String] = []
     var subSetQueryItems: [String] = []
+    var contactList : [Contact] = []
     var currentInputString :  String?
     
     var paramString : String! = ""
     var selectedString : String?
     var contactPermission : Bool = false
+    var contactView : ContactView?
     
     var contactStore : CNContactStore?
     @IBInspectable var borderColor: UIColor = UIColor.whiteColor(){
@@ -75,7 +77,7 @@ import UIKit
         NSOperationQueue().addOperationWithBlock({
             if self.contactPermission{
                 let predicate = CNContact.predicateForContactsMatchingName(prefix)
-                let toFetch = [CNContactGivenNameKey]
+                let toFetch = [CNContactGivenNameKey, CNContactFamilyNameKey,CNContactEmailAddressesKey, CNContactImageDataKey]
                 
                 do{
                     let contacts = try store.unifiedContactsMatchingPredicate(
@@ -85,8 +87,11 @@ import UIKit
                     for contact in contacts{
                         let myContact = Contact()
                         myContact.name = contact.givenName
+                        myContact.familyName = contact.familyName
+                        myContact.thumbImage = contact.imageData
                         myContact.id = contact.identifier
                         myContacts.append(myContact)
+                        self.contactList.append(myContact)
                         self.subSetQueryItems.append(myContact.name!)
                     }
                     
@@ -98,9 +103,7 @@ import UIKit
                 } catch let err{
                     print(err)
                 }
-
             }
-           
         })
     }
 
@@ -108,7 +111,6 @@ import UIKit
         self.clipsToBounds = true
         
         self.textField = UITextField(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: frame.width, height: 30))
-        self.textField!.backgroundColor = UIColor.yellowColor()
         
         self.textField!.placeholder = "Enter your contact name here"
         self.textField!.delegate = self
@@ -126,14 +128,34 @@ import UIKit
         self.tableView!.allowsSelection = true
         self.tableView!.hidden = true
         self.tableView!.registerClass(TextUITableViewCell.self, forCellReuseIdentifier: "Cell")
-
+        
         self.addSubview(textField!)
         self.addSubview(tableView!)
+    }
+    
+    private func addContactView(name: String, image: UIImage?){
+        if let currentContactView = self.contactView{
+            currentContactView.removeFromSuperview()
+        }
+        self.contactView = ContactView(frame: CGRect(x: (textField?.frame.origin.x)!*2, y: (textField?.frame.origin.y)!, width: ((textField?.bounds.width)!/5), height: (textField?.frame.height)!))
+        self.contactView!.hidden = false
+        self.contactView!.name.text = name
+        if let myImage = image{
+            self.contactView!.image.hidden = false
+            self.contactView!.image.image = myImage
+            self.contactView!.firstLetter.hidden = true
+        }else{
+            self.contactView!.image.hidden = true
+            self.contactView!.firstLetter.text = String(name.characterAtIndex(0)!).uppercaseString
+            self.contactView!.firstLetter.hidden = false
+        }
+        self.addSubview(self.contactView!)
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         let cell: TextUITableViewCell =  tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
         
+
         self.selectedString = cell.label.text
         self.textField!.text = selectedString
         self.tableView!.hidden = true
@@ -147,7 +169,11 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.Gray
-        cell.label.text = subSetQueryItems[indexPath.row]
+        cell.label.text = contactList[indexPath.row].name
+        
+        if let thumbImage = contactList[indexPath.row].thumbImage{
+             cell.currentImage.image = UIImage(data: thumbImage)
+        }
         return cell
     }
     
@@ -181,7 +207,7 @@ import UIKit
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         self.tableView!.hidden = false
-        
+        self.addContactView("teste", image: nil)
         if (range.length==1 && string.characters.count==0){
             print("backspace Pressed")
             self.paramString = self.paramString.substringToIndex(self.paramString.endIndex.predecessor())
