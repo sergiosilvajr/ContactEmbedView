@@ -20,7 +20,6 @@ import UIKit
     var textField: UITextField?
     var tableView : UITableView?
     var queryItems: [String] = []
-    var subSetQueryItems: [String] = []
     var contactList : [Contact] = []
     var currentInputString :  String?
     
@@ -134,7 +133,7 @@ import UIKit
         if let currentContactView = self.contactView{
             currentContactView.removeFromSuperview()
         }
-        self.contactView = ContactView(frame: CGRect(x: (textField?.frame.origin.x)!*2, y: (textField?.frame.origin.y)!, width: ((textField?.bounds.width)!/5), height: (textField?.frame.height)!))
+        self.contactView = ContactView(frame: CGRect(x: (textField?.frame.origin.x)!*2, y: (textField?.frame.origin.y)!, width: ((textField?.bounds.width)!/3), height: (textField?.bounds.height)!))
         self.contactView!.hidden = false
         self.contactView!.name.text = name
         if let myImage = image{
@@ -162,7 +161,7 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
         cell.selectionStyle = UITableViewCellSelectionStyle.Gray
-        cell.label.text = contactList[indexPath.row].name
+        cell.label.text = contactList[indexPath.row].name! + String(" ") + contactList[indexPath.row].familyName!
         
         if let thumbImage = contactList[indexPath.row].thumbImage{
              cell.currentImage.image = UIImage(data: thumbImage)
@@ -176,39 +175,50 @@ import UIKit
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+          self.contactList.removeAll()
+        self.tableView?.reloadData()
         self.tableView!.hidden = false
+       
         if (range.length==1 && string.characters.count==0){
-            print("backspace Pressed")
+          
             self.paramString = self.paramString.substringToIndex(self.paramString.endIndex.predecessor())
+            if self.paramString.characters.count == 0{
+                self.contactList.removeAll()
+                self.paramString = ""
+            }else{
+                 self.getContactList(self.paramString, store: self.contactStore!)
+            }
+            
         }else{
             self.paramString = self.paramString! + string
-
+            self.getContactList(self.paramString, store: self.contactStore!)
         }
-        self.subSetQueryItems.removeAll()
-        self.getContactList(self.paramString, store: self.contactStore!)
+        print(self.paramString)
+      
+
        
         return true
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return subSetQueryItems.count
+        return contactList.count
     }
     
-    private func fillStringArrayWithContactInfo(prefix: String, contacts: [Contact]) -> [String]{
-        var names = [String]()
+    private func fillStringArrayWithContactInfo(prefix: String, contacts: [Contact]) -> [Contact]{
+        var filteredContacts = [Contact]()
         for contact in contacts{
-            if contact.name!.containsString(prefix) == true {
-                names.append(contact.name!)
+            if contact.name!.startsWith(prefix) == true {
+                filteredContacts.append(contact)
             }
         }
-        return names
+        return filteredContacts
     }
     
     private func getContactList(prefix: String,store: CNContactStore){
         NSOperationQueue().addOperationWithBlock({
             if self.contactPermission{
                 let predicate = CNContact.predicateForContactsMatchingName(prefix)
-                let toFetch = [CNContactGivenNameKey, CNContactFamilyNameKey,CNContactEmailAddressesKey, CNContactImageDataKey]
+                let toFetch = [CNContactGivenNameKey, CNContactIdentifierKey,CNContactFamilyNameKey,CNContactEmailAddressesKey, CNContactImageDataKey]
                 
                 do{
                     let contacts = try store.unifiedContactsMatchingPredicate(
@@ -221,15 +231,14 @@ import UIKit
                         myContact.familyName = contact.familyName
                         myContact.thumbImage = contact.imageData
                         myContact.id = contact.identifier
+                        myContact.email = contact.emailAddresses
                         myContacts.append(myContact)
-                        self.contactList.append(myContact)
                     }
-                    self.subSetQueryItems = self.fillStringArrayWithContactInfo(prefix, contacts: myContacts)
+                    self.contactList = self.fillStringArrayWithContactInfo(prefix, contacts: myContacts)
                     
                     dispatch_async(dispatch_get_main_queue(), {
                         self.tableView?.reloadData()
                     })
-                    print("contact read")
                     
                 } catch let err{
                     print(err)

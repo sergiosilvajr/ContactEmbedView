@@ -19,4 +19,13 @@ extension String {
         }
         return nil
     }
+    
+    func startsWith(string: String) -> Bool {
+        
+        guard let range = rangeOfString(string, options:[.AnchoredSearch, .CaseInsensitiveSearch]) else {
+            return false
+        }
+        
+        return range.startIndex == startIndex
+    }
 }

@@ -5,7 +5,7 @@
 //  Created by Luis Sergio da Silva Junior on 2/29/16.
 //  Copyright © 2016 Luis Sergio. All rights reserved.
 //
-
+import Contacts
 import UIKit
 
 class Contact{
@@ -13,4 +13,5 @@ class Contact{
     var name : String?
     var familyName: String?
     var thumbImage: NSData?
+    var email: [CNLabeledValue]?
 }
