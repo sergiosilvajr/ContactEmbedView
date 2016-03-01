@@ -41,6 +41,37 @@ import UIKit
         }
     }
     
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let tableFrame = CGRectMake(self.frame.origin.x, self.frame.origin.y,
+            self.frame.size.width,
+            self.frame.size.height + 300);
+        if let contactView = self.contactView{
+            if CGRectContainsPoint(contactView.closeButton.frame, point){
+                print("closedButton clicked")
+                return contactView.closeButton
+            }else if CGRectContainsPoint(contactView.frame, point){
+                print("contactView clicked")
+                return contactView
+            }else if (CGRectContainsPoint(tableFrame, point)) &&  tableView!.hidden == false {
+                print("tableview clicked")
+                return tableView!
+            }
+        }else{
+            if CGRectContainsPoint(self.textField!.frame, point){
+                print("textField clicked")
+                return self.textField!
+            }else if (CGRectContainsPoint(tableFrame, point)) &&  tableView!.hidden == false {
+                print("tableview clicked")
+                return tableView!
+            }else if CGRectContainsPoint(frame, point){
+                print("view clicked")
+                return self
+            }
+            return nil
+        }
+        return nil
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.contactStore = self.accessContacts()
@@ -73,42 +104,8 @@ import UIKit
         return contactStore
     }
     
-    private func getContactList(prefix: String,store: CNContactStore){
-        NSOperationQueue().addOperationWithBlock({
-            if self.contactPermission{
-                let predicate = CNContact.predicateForContactsMatchingName(prefix)
-                let toFetch = [CNContactGivenNameKey, CNContactFamilyNameKey,CNContactEmailAddressesKey, CNContactImageDataKey]
-                
-                do{
-                    let contacts = try store.unifiedContactsMatchingPredicate(
-                        predicate, keysToFetch: toFetch)
-                    var myContacts = [Contact]()
-                    
-                    for contact in contacts{
-                        let myContact = Contact()
-                        myContact.name = contact.givenName
-                        myContact.familyName = contact.familyName
-                        myContact.thumbImage = contact.imageData
-                        myContact.id = contact.identifier
-                        myContacts.append(myContact)
-                        self.contactList.append(myContact)
-                        self.subSetQueryItems.append(myContact.name!)
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.tableView?.reloadData()
-                    })
-                    print("contact read")
-                    
-                } catch let err{
-                    print(err)
-                }
-            }
-        })
-    }
-
     private func initSubview(){
-        self.clipsToBounds = true
+        self.clipsToBounds = false
         
         self.textField = UITextField(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: frame.width, height: 30))
         
@@ -152,18 +149,14 @@ import UIKit
         self.addSubview(self.contactView!)
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
-        let cell: TextUITableViewCell =  tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:  indexPath) as! TextUITableViewCell
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell: TextUITableViewCell =  tableView.cellForRowAtIndexPath(indexPath) as! TextUITableViewCell
         
-
-        self.selectedString = cell.label.text
-        self.textField!.text = selectedString
-        self.tableView!.hidden = true
-        
-        if let string = self.selectedString{
-            print(string)
+        if let currentSelectedString = cell.label.text{
+            self.selectedString = currentSelectedString
+            self.tableView!.hidden = true
+            self.addContactView(self.selectedString!, image: nil)
         }
-    
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -177,29 +170,6 @@ import UIKit
         return cell
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
-        print("textFieldDidBeginEditing")
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        print("textFieldShouldReturn")
-        return true
-
-    }
-    func textFieldShouldClear(textField: UITextField) -> Bool {
-        print("textFieldShouldReturn")
-        return true
-    }
-    
-//    private func updateSubsetWords(word: String){
-//        self.subSetQueryItems.removeAll()
-//        for currentString in queryItems{
-//            if currentString.hasPrefix(word) {//||  word.hasPrefix(currentString){
-//                subSetQueryItems.append(currentString)
-//            }
-//        }
-//    }
-    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.textField!.endEditing(true)
         self.tableView!.hidden = true
@@ -207,7 +177,6 @@ import UIKit
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
         self.tableView!.hidden = false
-        self.addContactView("teste", image: nil)
         if (range.length==1 && string.characters.count==0){
             print("backspace Pressed")
             self.paramString = self.paramString.substringToIndex(self.paramString.endIndex.predecessor())
@@ -216,7 +185,7 @@ import UIKit
 
         }
         self.subSetQueryItems.removeAll()
-        getContactList(self.paramString, store: self.contactStore!)
+        self.getContactList(self.paramString, store: self.contactStore!)
        
         return true
     }
@@ -224,4 +193,49 @@ import UIKit
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return subSetQueryItems.count
     }
+    
+    private func fillStringArrayWithContactInfo(prefix: String, contacts: [Contact]) -> [String]{
+        var names = [String]()
+        for contact in contacts{
+            if contact.name!.containsString(prefix) == true {
+                names.append(contact.name!)
+            }
+        }
+        return names
+    }
+    
+    private func getContactList(prefix: String,store: CNContactStore){
+        NSOperationQueue().addOperationWithBlock({
+            if self.contactPermission{
+                let predicate = CNContact.predicateForContactsMatchingName(prefix)
+                let toFetch = [CNContactGivenNameKey, CNContactFamilyNameKey,CNContactEmailAddressesKey, CNContactImageDataKey]
+                
+                do{
+                    let contacts = try store.unifiedContactsMatchingPredicate(
+                        predicate, keysToFetch: toFetch)
+                    var myContacts = [Contact]()
+                    
+                    for contact in contacts{
+                        let myContact = Contact()
+                        myContact.name = contact.givenName
+                        myContact.familyName = contact.familyName
+                        myContact.thumbImage = contact.imageData
+                        myContact.id = contact.identifier
+                        myContacts.append(myContact)
+                        self.contactList.append(myContact)
+                    }
+                    self.subSetQueryItems = self.fillStringArrayWithContactInfo(prefix, contacts: myContacts)
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.tableView?.reloadData()
+                    })
+                    print("contact read")
+                    
+                } catch let err{
+                    print(err)
+                }
+            }
+        })
+    }
+
 }

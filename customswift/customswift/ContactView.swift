@@ -27,10 +27,10 @@ class ContactView : UIView {
     func initView(){
         self.backgroundColor = UIColor.grayColor()
         
-        firstLetter = UILabel(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: 30, height: 30))
+        firstLetter = UILabel(frame: CGRect(x: bounds.origin.x, y: bounds.origin.y, width: 40, height: 30))
         firstLetter.textAlignment = NSTextAlignment.Center
-        firstLetter.backgroundColor = getRandomColor()
-        name = UILabel(frame: CGRect(x: bounds.origin.x + firstLetter.bounds.width, y: bounds.origin.y, width: 30, height: 30))
+        firstLetter.backgroundColor = Utils.getRandomColor()
+        name = UILabel(frame: CGRect(x: bounds.origin.x + firstLetter.bounds.width, y: bounds.origin.y, width: 60, height: 30))
         
         firstLetter.layer.cornerRadius = firstLetter.frame.size.width/2
         firstLetter.layer.masksToBounds = true
@@ -47,35 +47,11 @@ class ContactView : UIView {
     }
     
     func clickOnCloseButton(sender: UIButton){
-        print("closed")
+        print("closed contact View")
+        (self.superview as! AutoCompleteTextView).contactView = nil
         self.removeFromSuperview()
         self.hidden = true
     }
     
-    private func getRandomColor() -> UIColor{
-        var color: UIColor
-        let result = Int.random(0...5)
-        switch result{
-        case 1:
-            color = UIColor.greenColor()
-            break
-        case 2:
-             color = UIColor.whiteColor()
-            break
-        case 3:
-             color = UIColor.blueColor()
-            break
-        case 4:
-             color = UIColor.magentaColor()
-            break
-        case 5:
-             color = UIColor.yellowColor()
-            break
-        default:
-            color = UIColor.redColor()
-            break
-        }
-         return color
-    }
-    
+       
 }

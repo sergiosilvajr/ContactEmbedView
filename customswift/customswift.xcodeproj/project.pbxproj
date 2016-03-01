@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B117DAA21C85F29500F46C4A /* ContactUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B117DAA11C85F29500F46C4A /* ContactUtils.swift */; };
+		B117DAA51C85F38600F46C4A /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = B117DAA41C85F38600F46C4A /* Utils.swift */; };
 		B15854651C7CAAD1002A771D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15854641C7CAAD1002A771D /* AppDelegate.swift */; };
 		B15854671C7CAAD1002A771D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15854661C7CAAD1002A771D /* ViewController.swift */; };
 		B158546A1C7CAAD1002A771D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B15854681C7CAAD1002A771D /* Main.storyboard */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B117DAA11C85F29500F46C4A /* ContactUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUtils.swift; sourceTree = "<group>"; };
+		B117DAA41C85F38600F46C4A /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		B15854611C7CAAD1002A771D /* customswift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = customswift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B15854641C7CAAD1002A771D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B15854661C7CAAD1002A771D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +51,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B117DAA31C85F29900F46C4A /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				B117DAA11C85F29500F46C4A /* ContactUtils.swift */,
+				B117DAA41C85F38600F46C4A /* Utils.swift */,
+			);
+			name = utils;
+			sourceTree = "<group>";
+		};
 		B15854581C7CAAD1002A771D = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +79,7 @@
 		B15854631C7CAAD1002A771D /* customswift */ = {
 			isa = PBXGroup;
 			children = (
+				B117DAA31C85F29900F46C4A /* utils */,
 				B1DDF0DD1C84A6570053DA7F /* extension */,
 				B161DE091C8471CB005CBCAE /* model */,
 				B161DE081C8471AA005CBCAE /* view */,
@@ -182,6 +196,8 @@
 				B1DDF0DA1C84A00C0053DA7F /* IntExtension.swift in Sources */,
 				B1D135AA1C7CBBAF004C93D8 /* TextUITableViewCell.swift in Sources */,
 				B1DDF0DC1C84A4230053DA7F /* StringExtension.swift in Sources */,
+				B117DAA51C85F38600F46C4A /* Utils.swift in Sources */,
+				B117DAA21C85F29500F46C4A /* ContactUtils.swift in Sources */,
 				B15854671C7CAAD1002A771D /* ViewController.swift in Sources */,
 				B15854651C7CAAD1002A771D /* AppDelegate.swift in Sources */,
 				B15854791C7CABE1002A771D /* AutoCompleteTextView.swift in Sources */,
