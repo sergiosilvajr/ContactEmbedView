@@ -12,12 +12,15 @@ Basically we have two approaches:
 
 The gif below shows the current state of our component.
 
+Android:
+
 https://github.com/sergiosilvajr/ContactEmbedView/blob/master/CustomView/app/repoimgfiles/component.gif
 
+iOS: 
+
+https://github.com/sergiosilvajr/ContactEmbedView/blob/master/customswift/customswift/Screen_Recording.gif
 
 2 -  When you need select more than one contact.
 
 Under development.. please, be patient.
 
-
-ps: This component is available only on Android Systems. iOS version is also under development.
