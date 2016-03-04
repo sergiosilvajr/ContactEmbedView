@@ -14,11 +14,11 @@ The gif below shows the current state of our component.
 
 Android:
 
-https://github.com/sergiosilvajr/ContactEmbedView/blob/master/CustomView/app/repoimgfiles/component.gif
+![AndroidVersion](https://github.com/sergiosilvajr/ContactEmbedView/blob/master/CustomView/app/repoimgfiles/component.gif)
 
 iOS: 
 
-https://github.com/sergiosilvajr/ContactEmbedView/blob/master/customswift/customswift/Screen_Recording.gif
+![iOSVersion(]https://github.com/sergiosilvajr/ContactEmbedView/blob/master/customswift/customswift/Screen_Recording.gif)
 
 2 -  When you need select more than one contact.
 
