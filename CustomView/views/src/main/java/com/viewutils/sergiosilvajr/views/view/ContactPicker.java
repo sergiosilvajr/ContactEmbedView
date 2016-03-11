@@ -1,19 +1,14 @@
 package com.viewutils.sergiosilvajr.views.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 
 import com.viewutils.sergiosilvajr.views.R;
 import com.viewutils.sergiosilvajr.views.adapter.ContactAdapter;
@@ -29,6 +24,8 @@ import java.util.List;
 public final class  ContactPicker extends FrameLayout {
     private AppCompatMultiAutoCompleteTextView multiAutoCompleteTextView;
     private ContactEmbedView contactEmbedView;
+    private Contact contact;
+
     public ContactPicker(Context context) {
         super(context);
         initAttrs(null);
@@ -66,6 +63,7 @@ public final class  ContactPicker extends FrameLayout {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Contact contact = (Contact) contactAdapter.getItem(position);
+                ContactPicker.this.contact = contact;
                 if (contactEmbedView != null) {
                     contactEmbedView.setVisibility(View.GONE);
                 }
@@ -75,7 +73,6 @@ public final class  ContactPicker extends FrameLayout {
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT));
                 relativeLayout.addView(contactEmbedView);
-                //((RelativeLayout.LayoutParams)contactEmbedView.getLayoutParams()).addRule(RelativeLayout.CENTER_HORIZONTAL  ,RelativeLayout.TRUE);
 
                 multiAutoCompleteTextView.postDelayed(new Runnable() {
                     public void run() {
@@ -91,6 +88,17 @@ public final class  ContactPicker extends FrameLayout {
 
         rootView.invalidate();
         addView(rootView);
+    }
+    public Contact getSelectedContact(){
+        if(contactEmbedView!= null){
+            if(contactEmbedView.isShown()){
+                return contact;
+            }else{
+                return null;
+            }
+        }else{
+            return null;
+        }
     }
 
     private void initAttrs(AttributeSet attrs){
