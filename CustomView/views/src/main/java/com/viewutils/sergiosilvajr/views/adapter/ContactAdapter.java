@@ -83,7 +83,12 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
         }
 
         if (currentContact != null){
-            holder.nameTextView.setText(currentContact.getName());
+            final int maxLength = 20;
+            String contactName = currentContact.getName();
+            if (contactName.length() > maxLength){
+                contactName = currentContact.getName().substring(0,maxLength) + "...";
+            }
+            holder.nameTextView.setText(contactName);
             holder.letterTextView.setText("");
 
             if (currentContact.getPhoto() != null){
@@ -114,7 +119,12 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
             }
 
             if (currentContact.getEmails() != null && !currentContact.getEmails().isEmpty()){
-                holder.firstEmailTextView.setText(currentContact.getEmails().get(0));
+                final int maxEmailLengh = 30;
+                String emailContact = currentContact.getEmails().get(0);
+                if(emailContact.length() > maxEmailLengh){
+                    emailContact = emailContact.substring(0,maxEmailLengh) + "...";
+                }
+                holder.firstEmailTextView.setText(emailContact);
             } else{
                 holder.firstEmailTextView.setText("");
             }
