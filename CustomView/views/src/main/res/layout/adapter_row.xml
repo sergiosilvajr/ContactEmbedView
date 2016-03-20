@@ -6,12 +6,12 @@
     >
     <TextView
         android:id="@+id/first_letter_text_view"
-        android:layout_width="50dp"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:layout_centerVertical="true"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:background="@drawable/circle_view"
         android:textAllCaps="true"
         android:text="N"/>
@@ -21,12 +21,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
         android:maxLines="1"
         android:ellipsize="end"
-        android:maxLength="10"
+        android:maxLength="23"
         android:text="@string/no_name"/>
         <TextView
             android:layout_toRightOf="@id/first_letter_text_view"
@@ -35,9 +35,10 @@
             android:id="@+id/text_view_item_email"
             android:ellipsize="end"
             android:maxLines="1"
+            android:maxLength="33"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:text="@string/no_email"/>
         <TextView
             android:layout_toRightOf="@id/text_view_item_email"
