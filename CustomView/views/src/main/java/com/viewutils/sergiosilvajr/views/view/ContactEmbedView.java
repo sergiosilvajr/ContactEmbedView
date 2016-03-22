@@ -74,6 +74,7 @@ final class ContactEmbedView extends FrameLayout{
                 firstLetterTextView.setBackground(dr);
             }
 
+
         }
         TextView cross = (TextView) view.findViewById(R.id.cross);
         if(isXWorking){
@@ -83,6 +84,7 @@ final class ContactEmbedView extends FrameLayout{
                     if (multiAutoCompleteTextView != null) {
                         multiAutoCompleteTextView.requestFocus();
                         multiAutoCompleteTextView.setText("");
+                        multiAutoCompleteTextView.setEnabled(true);
                     }
                     setVisibility(View.GONE);
                     //TODO ver como deletar da memoria a view
