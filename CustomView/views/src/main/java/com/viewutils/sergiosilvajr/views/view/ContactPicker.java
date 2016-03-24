@@ -1,6 +1,7 @@
 package com.viewutils.sergiosilvajr.views.view;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.AppCompatMultiAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -34,8 +35,8 @@ public final class  ContactPicker extends FrameLayout {
 
     public ContactPicker(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initAttrs(attrs);
         initView();
+        initAttrs(attrs);
     }
 
     public ContactPicker(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -119,6 +120,13 @@ public final class  ContactPicker extends FrameLayout {
             }else{
                 Contact.mainAttribute = ContactMainAttribute.NAME;
             }
+            TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.com_viewutils_sergiosilvajr_customview_view_ContactPicker);
+            int color = a.getColor(R.styleable.com_viewutils_sergiosilvajr_customview_view_ContactPicker_text_color, 0);
+            if (color != 0){
+                multiAutoCompleteTextView.setTextColor(color);
+            }
+
         }
     }
+
 }
