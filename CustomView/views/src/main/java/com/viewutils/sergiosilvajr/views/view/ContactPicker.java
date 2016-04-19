@@ -103,10 +103,7 @@ public final class  ContactPicker extends FrameLayout {
     }
 
     public String getText(){
-        if(contactEmbedView != null){
-            return multiAutoCompleteTextView.getText().toString();
-        }
-        return null;
+        return multiAutoCompleteTextView.getText().toString();
     }
 
     private void initAttrs(AttributeSet attrs){

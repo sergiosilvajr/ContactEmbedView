@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.b1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("MainActivity",""+contactPicker.getText());
+                Log.v("MainActivity","is: "+contactPicker.getText());
             }
         });
     }
