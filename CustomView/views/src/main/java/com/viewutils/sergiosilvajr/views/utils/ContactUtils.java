@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import com.viewutils.sergiosilvajr.views.model.Contact;
 
@@ -32,6 +33,8 @@ public class ContactUtils {
 
     private static final Uri EmailCONTENT_URI =  ContactsContract.CommonDataKinds.Email.CONTENT_URI;
     private static final String EmailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
+
+    private static final String EMAIL_ONLY_FILTER = ContactsContract.CommonDataKinds.Email.DATA + " NOT LIKE ''";
     private static final String DATA = ContactsContract.CommonDataKinds.Email.DATA;
 
     private ContactUtils(){}
@@ -55,7 +58,8 @@ public class ContactUtils {
 
     public Contact getContactWithNameAndEmail(Context context, String name, String email){
         ContentResolver contentResolver = context.getContentResolver();
-        Cursor cursor = contentResolver.query(CONTENT_URI, null, DISPLAY_NAME+"= ?", new String[]{name}, null);
+        Cursor cursor = contentResolver.query(CONTENT_URI, null, DISPLAY_NAME+" like ?", new String[]{"%"+name+"%"}, null);
+
         List<Contact> contacts = new ArrayList<>();
         if (cursor !=null) {
             while (cursor.moveToNext()){
@@ -64,16 +68,28 @@ public class ContactUtils {
         }
        if (!contacts.isEmpty()){
            for(Contact contact: contacts){
-               if(contact.getName().equalsIgnoreCase(name) && contact.getEmails().contains(email)){
-                   return contact;
+               if (contact.getEmails() != null && !contact.getEmails().isEmpty()){
+                   if(contact.getEmails().contains(email)){
+                       return contact;
+                   }
                }
            }
        }
         return null;
     }
+
     public void loadAllContacts(Context context){
         ContentResolver contentResolver = context.getContentResolver();
-        Cursor cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
+//        Cursor cursor = contentResolver.query(CONTENT_URI, new String[] { ContactsContract.RawContacts._ID,
+//                ContactsContract.Contacts.DISPLAY_NAME,
+//                ContactsContract.Contacts.PHOTO_ID,
+//                ContactsContract.CommonDataKinds.Email.DATA,
+//                ContactsContract.CommonDataKinds.Photo.CONTACT_ID }, EMAIL_ONLY_FILTER, null, null);
+
+        Cursor cursor = contentResolver.query(CONTENT_URI, null , null, null, null);
+        for( String column : cursor.getColumnNames()){
+            Log.d("column: " , column);
+        }
         if (cursor !=null) {
             while (cursor.moveToNext()){
                 Contact contact = getContact(context, contentResolver, cursor);

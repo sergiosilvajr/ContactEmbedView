@@ -51,7 +51,6 @@ public final class  ContactPicker extends FrameLayout {
 
         this.multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
         List<Contact> contacts = ContactUtils.getInstance().getContactList();
-        Contact.mainAttribute = ContactMainAttribute.NAME;
 
         final ContactAdapter contactAdapter = new ContactAdapter(getContext(), R.layout.adapter_row, contacts);
 
@@ -103,23 +102,15 @@ public final class  ContactPicker extends FrameLayout {
         }
     }
 
+    public String getText(){
+        if(contactEmbedView != null){
+            return multiAutoCompleteTextView.getText().toString();
+        }
+        return null;
+    }
+
     private void initAttrs(AttributeSet attrs){
         if (attrs != null) {
-            String packageName = "http://schemas.android.com/apk/res-auto";
-            String value = (attrs.getAttributeValue(packageName, "main_type"));
-            if(value!=null) {
-                if (value.equals("1")) {
-                    Contact.mainAttribute = ContactMainAttribute.NAME;
-                } else if (value.equals("2")) {
-                    Contact.mainAttribute = ContactMainAttribute.EMAIL;
-                } else if (value.equals("3")) {
-                    Contact.mainAttribute = ContactMainAttribute.NUMBER;
-                } else {
-                    Contact.mainAttribute = ContactMainAttribute.NAME;
-                }
-            }else{
-                Contact.mainAttribute = ContactMainAttribute.NAME;
-            }
             TypedArray a = getContext().obtainStyledAttributes(attrs,R.styleable.com_viewutils_sergiosilvajr_customview_view_ContactPicker);
             int color = a.getColor(R.styleable.com_viewutils_sergiosilvajr_customview_view_ContactPicker_text_color, 0);
             if (color != 0){

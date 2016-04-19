@@ -16,8 +16,6 @@ public class Contact {
     private byte[] photo;
 
     private Integer viewColor;
-
-    public static ContactMainAttribute mainAttribute = ContactMainAttribute.NAME;
     public String getName() {
         return name;
     }

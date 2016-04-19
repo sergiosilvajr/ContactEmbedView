@@ -47,7 +47,6 @@ public final class MultContactsPicker extends FrameLayout {
 
         this.multiAutoCompleteTextView = (AppCompatMultiAutoCompleteTextView) rootView.findViewById(R.id.multiautocompletetextview);
         List<Contact> contacts = ContactUtils.getInstance().getContactList();
-        Contact.mainAttribute = ContactMainAttribute.NAME;
 
         final ContactAdapter contactAdapter = new ContactAdapter(getContext(), R.layout.adapter_row, contacts);
 

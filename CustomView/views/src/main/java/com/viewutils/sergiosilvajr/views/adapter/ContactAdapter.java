@@ -159,19 +159,11 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
                 if(contactsAll != null && !contactsAll.isEmpty() && constraint!=null){
                     suggestions.clear();
                     for(Contact contact : contactsAll){
-                        if (Contact.mainAttribute == ContactMainAttribute.NAME){
-                            if (contact.getName().toLowerCase().startsWith(constraint.toString().toLowerCase()) ){
+                            if (contact.getName().toLowerCase().startsWith(constraint.toString().toLowerCase())
+                                    || !contact.getEmailFromSuggestion(constraint).isEmpty()||
+                                    !contact.getPhonesFromSuggestion(constraint).isEmpty()){
                                 suggestions.add(contact);
                             }
-                        }else if (Contact.mainAttribute == ContactMainAttribute.EMAIL){
-                            if (!contact.getEmailFromSuggestion(constraint).isEmpty()){
-                                suggestions.add(contact);
-                            }
-                        } else {
-                            if (!contact.getPhonesFromSuggestion(constraint).isEmpty()){
-                                suggestions.add(contact);
-                            }
-                        }
                     }
                     FilterResults results = new FilterResults();
                     results.values = suggestions;

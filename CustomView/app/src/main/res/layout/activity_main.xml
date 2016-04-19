@@ -8,9 +8,16 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
     <com.viewutils.sergiosilvajr.views.view.ContactPicker
+        android:id="@+id/contact_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         custom:main_type="name"
         custom:text_color="#FF0000"
         />
+    <Button
+        android:id="@+id/b1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contact_picker"
+        android:text="ok"/>
 </RelativeLayout>

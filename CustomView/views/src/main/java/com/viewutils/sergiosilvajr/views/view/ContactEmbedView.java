@@ -106,7 +106,7 @@ final class ContactEmbedView extends FrameLayout{
 
 
 
-    public void setMultiAutoCompleteTextView(MultiAutoCompleteTextView multiAutoCompleteTextView) {
+    void setMultiAutoCompleteTextView(MultiAutoCompleteTextView multiAutoCompleteTextView) {
         this.multiAutoCompleteTextView = multiAutoCompleteTextView;
     }
 }

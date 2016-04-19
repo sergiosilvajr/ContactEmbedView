@@ -13,14 +13,14 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        contactUtils = ContactUtils.getInstance();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                contactUtils.loadAllContacts(MainApplication.this);
-                Log.v("loading status","all contact loaded");
-            }
-        }).start();
+//        contactUtils = ContactUtils.getInstance();
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                contactUtils.loadAllContacts(MainApplication.this);
+//                Log.v("loading status","all contact loaded");
+//            }
+//        }).start();
     }
 
     @Override
