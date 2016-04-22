@@ -58,13 +58,16 @@ public class ContactUtils {
 
     public Contact getContactWithNameAndEmail(Context context, String name, String email){
         ContentResolver contentResolver = context.getContentResolver();
-        Cursor cursor = contentResolver.query(CONTENT_URI, null, DISPLAY_NAME+" like ?", new String[]{"%"+name+"%"}, null);
+        Cursor cursor = contentResolver.query(CONTENT_URI, new String[] { ContactsContract.Contacts._ID,
+                ContactsContract.Contacts.DISPLAY_NAME,
+                HAS_PHONE_NUMBER}, DISPLAY_NAME+" like ?", new String[]{"%"+name+"%"}, null);
 
         List<Contact> contacts = new ArrayList<>();
         if (cursor !=null) {
             while (cursor.moveToNext()){
                 contacts.add(getContact(context, contentResolver, cursor));
             }
+            cursor.close();
         }
        if (!contacts.isEmpty()){
            for(Contact contact: contacts){
