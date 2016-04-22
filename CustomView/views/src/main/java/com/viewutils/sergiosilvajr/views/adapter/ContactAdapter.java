@@ -25,6 +25,7 @@ import com.viewutils.sergiosilvajr.views.R;
 import com.viewutils.sergiosilvajr.views.model.Contact;
 import com.viewutils.sergiosilvajr.views.utils.ColorUtils;
 import com.viewutils.sergiosilvajr.views.utils.ContactMainAttribute;
+import com.viewutils.sergiosilvajr.views.utils.ContactUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -156,21 +157,24 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                if(contactsAll != null && !contactsAll.isEmpty() && constraint!=null){
-                    suggestions.clear();
-                    for(Contact contact : contactsAll){
-                            if (contact.getName().toLowerCase().startsWith(constraint.toString().toLowerCase())
-                                    || !contact.getEmailFromSuggestion(constraint).isEmpty()||
-                                    !contact.getPhonesFromSuggestion(constraint).isEmpty()){
+                synchronized (this) {
+                    if (constraint != null) {
+                        suggestions.clear();
+
+                        contactsAll = ContactUtils.getInstance().loadSubListContacts(context, constraint.toString());
+
+                        for (Contact contact : contactsAll) {
+                            if (!contact.getEmailFromSuggestion(constraint).isEmpty()) {
                                 suggestions.add(contact);
                             }
+                        }
+                        FilterResults results = new FilterResults();
+                        results.values = suggestions;
+                        results.count = suggestions.size();
+                        return results;
+                    } else {
+                        return new FilterResults();
                     }
-                    FilterResults results = new FilterResults();
-                    results.values = suggestions;
-                    results.count = suggestions.size();
-                    return results;
-                } else {
-                    return new FilterResults();
                 }
             }
 
@@ -188,6 +192,7 @@ public class ContactAdapter extends BaseAdapter implements Filterable {
                 }else if (constraint == null){
                     contactsSubSet.addAll(contactsAll);
                 }
+                contactsAll.clear();
                 notifyDataSetChanged();
             }
         };

@@ -1,7 +1,5 @@
 package com.viewutils.sergiosilvajr.views.model;
 
-import com.viewutils.sergiosilvajr.views.utils.ContactMainAttribute;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,25 +57,14 @@ public class Contact {
     }
 
     public List<String> getEmailFromSuggestion(CharSequence charSequence){
-        List<String> emails = new ArrayList<>();
-        for(String email: emails){
+        List<String> filteredEmails = new ArrayList<>();
+        for(String email: getEmails()){
             if(email.toLowerCase().startsWith(charSequence.toString().toLowerCase())){
-                emails.add(email);
+                filteredEmails.add(email);
             }
         }
-        return emails;
+        return filteredEmails;
     }
-
-    public List<String> getPhonesFromSuggestion(CharSequence charSequence){
-        List<String> phones = new ArrayList<>();
-        for(String phone: phones){
-            if(phone.toLowerCase().startsWith(charSequence.toString().toLowerCase())){
-                phones.add(phone);
-            }
-        }
-        return phones;
-    }
-
 
     public byte[] getPhoto() {
         return photo;

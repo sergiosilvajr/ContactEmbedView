@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.viewutils.sergiosilvajr.views.BuildConfig;
 import com.viewutils.sergiosilvajr.views.model.Contact;
 
 import java.util.ArrayList;
@@ -34,7 +35,6 @@ public class ContactUtils {
     private static final Uri EmailCONTENT_URI =  ContactsContract.CommonDataKinds.Email.CONTENT_URI;
     private static final String EmailCONTACT_ID = ContactsContract.CommonDataKinds.Email.CONTACT_ID;
 
-    private static final String EMAIL_ONLY_FILTER = ContactsContract.CommonDataKinds.Email.DATA + " NOT LIKE ''";
     private static final String DATA = ContactsContract.CommonDataKinds.Email.DATA;
 
     private ContactUtils(){}
@@ -78,18 +78,15 @@ public class ContactUtils {
         return null;
     }
 
-    public void loadAllContacts(Context context){
+    public List<Contact>  loadSubListContacts(Context context, String startsWithString){
+        List<Contact> contactList = new ArrayList<>();
         ContentResolver contentResolver = context.getContentResolver();
-//        Cursor cursor = contentResolver.query(CONTENT_URI, new String[] { ContactsContract.RawContacts._ID,
-//                ContactsContract.Contacts.DISPLAY_NAME,
-//                ContactsContract.Contacts.PHOTO_ID,
-//                ContactsContract.CommonDataKinds.Email.DATA,
-//                ContactsContract.CommonDataKinds.Photo.CONTACT_ID }, EMAIL_ONLY_FILTER, null, null);
 
-        Cursor cursor = contentResolver.query(CONTENT_URI, null , null, null, null);
-        for( String column : cursor.getColumnNames()){
-            Log.d("column: " , column);
-        }
+        Cursor cursor = contentResolver.query(CONTENT_URI, new String[] { ContactsContract.Contacts._ID,
+                    ContactsContract.Contacts.DISPLAY_NAME,
+                    HAS_PHONE_NUMBER}, DISPLAY_NAME+" like ?", new String[]{startsWithString+"%"}, null);
+
+
         if (cursor !=null) {
             while (cursor.moveToNext()){
                 Contact contact = getContact(context, contentResolver, cursor);
@@ -97,7 +94,9 @@ public class ContactUtils {
                     contactList.add(contact);
                 }
             }
+            cursor.close();
         }
+        return contactList;
     }
 
     private Contact getContact(Context context, ContentResolver contentResolver, Cursor cursor){
@@ -106,20 +105,25 @@ public class ContactUtils {
         contact.setId(cursor.getString(cursor.getColumnIndex(_ID)));
         contact.setPhoto(openPhoto(context, Long.parseLong(contact.getId())));
 
+        Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
         int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
 
         if (hasPhoneNumber > 0) {
             Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null, Phone_CONTACT_ID + " = ?", new String[]{contact.getId()}, null);
-            while (phoneCursor.moveToNext()) {
-                contact.addPhone(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)));
+            if (phoneCursor!= null) {
+                while (phoneCursor.moveToNext()) {
+                    contact.addPhone(phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER)));
+                }
+                phoneCursor.close();
             }
-            phoneCursor.close();
         }
-        Cursor emailCursor = contentResolver.query(EmailCONTENT_URI, null, EmailCONTACT_ID + " = ?", new String[]{contact.getId()}, null);
-        while (emailCursor.moveToNext()) {
-            contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
+
+        if (emailCursor!= null) {
+            while (emailCursor.moveToNext()) {
+                contact.addEmail(emailCursor.getString(emailCursor.getColumnIndex(DATA)));
+            }
+            emailCursor.close();
         }
-        emailCursor.close();
         return contact;
     }
 
