@@ -81,11 +81,11 @@ public final class  ContactPicker extends FrameLayout {
                                 multiAutoCompleteTextView.getWindowToken(), 0);
                     }
                 }, 200);
+                multiAutoCompleteTextView.setText("");
                 multiAutoCompleteTextView.clearFocus();
                 multiAutoCompleteTextView.setEnabled(false);
             }
         });
-
 
         rootView.invalidate();
         addView(rootView);
