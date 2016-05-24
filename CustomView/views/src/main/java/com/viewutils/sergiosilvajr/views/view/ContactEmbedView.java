@@ -73,9 +73,8 @@ final class ContactEmbedView extends FrameLayout{
                 dr.setCircular(true);
                 firstLetterTextView.setBackground(dr);
             }
-
-
         }
+
         TextView cross = (TextView) view.findViewById(R.id.cross);
         if(isXWorking){
             cross.setOnClickListener(new OnClickListener() {
@@ -103,8 +102,6 @@ final class ContactEmbedView extends FrameLayout{
         }
 
     }
-
-
 
     void setMultiAutoCompleteTextView(MultiAutoCompleteTextView multiAutoCompleteTextView) {
         this.multiAutoCompleteTextView = multiAutoCompleteTextView;

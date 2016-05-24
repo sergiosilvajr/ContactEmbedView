@@ -3,50 +3,56 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/square_view"
-    >
+    android:padding="10dp">
+
     <TextView
         android:id="@+id/first_letter_text_view"
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:textColor="@android:color/white"
         android:gravity="center"
         android:layout_centerVertical="true"
         android:textSize="30sp"
         android:background="@drawable/circle_view"
         android:textAllCaps="true"
+        android:layout_marginRight="10dp"
         android:text="N"/>
+
     <TextView
         android:layout_toRightOf="@id/first_letter_text_view"
         android:id="@+id/text_view_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginRight="5dp"
         android:textColor="@android:color/black"
         android:maxLines="1"
         android:ellipsize="end"
         android:maxLength="23"
         android:text="@string/no_name"/>
-        <TextView
-            android:layout_toRightOf="@id/first_letter_text_view"
-            android:layout_below="@id/text_view_item_name"
-            android:layout_marginLeft="5dp"
-            android:id="@+id/text_view_item_email"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:maxLength="33"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="@string/no_email"/>
-        <TextView
-            android:layout_toRightOf="@id/text_view_item_email"
-            android:id="@+id/text_view_item_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:textSize="20sp"
-            android:visibility="invisible"
-            android:text="@string/no_phone"/>
+
+    <TextView
+        android:layout_toRightOf="@id/first_letter_text_view"
+        android:layout_below="@id/text_view_item_name"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/text_view_item_email"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:maxLength="33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="@string/no_email"/>
+
+    <TextView
+        android:layout_toRightOf="@id/text_view_item_email"
+        android:id="@+id/text_view_item_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:text="@string/no_phone"/>
+
 </RelativeLayout>
